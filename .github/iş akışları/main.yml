@@ -1,0 +1,26 @@
+# Bu, Eylemleri kullanmaya başlamanıza yardımcı olacak temel bir iş akışıdır
+
+isim : Windows-CRD
+
+üzerinde :
+  workflow_dispatch :
+    girdiler :
+      yetki kodu :1pY83IDY8liqS4Ut42RMtiPX0BD_6ZtCqs4u9s7fLQfwnopbD
+        açıklama : ' & "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="4/0AX4XfWhGbLVq1FLXcCTmmNo3M_4CnFqhZfF6lCd5DFbWECs0QiO_xhLwk9RpiQq4gH8T_w" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$Env:COMPUTERNAME '
+        gerekli : doğru
+      pin kodu :123456
+        tanım : ' 123456 '
+        gerekli : doğru
+  
+işler :
+  inşa :
+    çalışır durumda : windows-en son
+
+    adımlar :
+    - şunu kullanır : eylemler/checkout@v2
+    - ad : Kurulumu Başlatma
+      çalıştırın : ./setup.ps1
+    - isim : CRD'yi Başlatma
+      çalıştırın : ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+    - isim : Canlı Tut
+      çalıştırın : ./timeout.ps1
